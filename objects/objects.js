@@ -1,12 +1,10 @@
 let person = new Object();
 
-let job = 'profession';
-
 person.firstname = 'John';
-person['lastname'] = 'Smith';
-person[job] = 'Instructor';
+person.lastname = 'Smith';
+
+person.son = new Object();
+person.son.name = 'Nick';
+person.son.age = 5;
 
 console.log(person);
-console.log(person.firstname);
-console.log(person['lastname']);
-console.log(person[job]);
