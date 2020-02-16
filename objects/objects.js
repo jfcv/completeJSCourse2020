@@ -6,11 +6,11 @@ let person = {
     name: 'Mary',
     age: 5
   },
-  myFunc: function(daughterName, fatherName, daughterAge) {
-    console.log(daughterName+ ' is the daughter of ' +fatherName+ ' and she is ' +daughterAge+ ' years old.');
+  myFunc: function(par) {
+    console.log(par.daughterName+ ' is the daughter of ' +par.fatherName+ ' and she is ' +par.daugtherAge+ ' years old.');
   }
 };
 
 console.log(person);
 //calling the function
-person.myFunc(person.daugther.name, person.firstname, person.daugther.age);
+person.myFunc({daughterName: 'Jessy', fatherName: 'Michael', daugtherAge: 5});
