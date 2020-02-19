@@ -18,4 +18,13 @@ var person = {
   }
 }
 
+var person1 = {
+  firstname: 'Nick',
+  lastname: 'Doe'
+}
+
+person1.getFullname = person.getFullname; //awesome !!
+
 person.getFullname();
+
+person1.getFullname(); //borrowing the method from the first object 'person'
