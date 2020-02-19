@@ -5,7 +5,16 @@ var person = {
   firstname: 'John',
   lastname: 'Smith',
   getFullname: function() {
-    return this.firstname + ' ' + this.lastname;
+    //prints the name
+    console.log(this.firstname + ' ' + this.lastname);
+
+    that = this; //passing the keyword 'this' which is a pointer to the object 'person' to another pointer 'that'
+    function greet() {
+      console.log('Hi ' + that.firstname);
+    }
+
+    greet();
+
   }
 }
 
