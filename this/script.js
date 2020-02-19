@@ -1,8 +1,9 @@
-//this keyword usually refers to the Global Window Object
-//  this === window  ->   on the web browser
+var person = {
+  firstname: 'John',
+  lastname: 'Smith',
+  getFullname: function() {
+    return person.firstname + ' ' + person.lastname;
+  }
+}
 
-function a() {
-  console.log(this); //this here refers to global window object
-};
-
-a();
+console.log(person.getFullname());
