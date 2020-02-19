@@ -8,7 +8,7 @@ var person = {
     //prints the name
     console.log(this.firstname + ' ' + this.lastname);
 
-    that = this; //passing the keyword 'this' which is a pointer to the object 'person' to another pointer 'that'
+    let that = this; //passing the keyword 'this' which is a pointer to the object 'person' to another pointer 'that'
     function greet() {
       console.log('Hi ' + that.firstname);
     }
@@ -18,4 +18,4 @@ var person = {
   }
 }
 
-console.log(person.getFullname());
+person.getFullname();
