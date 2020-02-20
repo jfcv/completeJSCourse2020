@@ -1,8 +1,5 @@
-let list = document.querySelectorAll('li, #hide-list');
+let h2 = document.querySelector('header h2');
 
-console.log(list);
+h2.className = 'changeBg changeFt';
 
-Array.from(list).forEach(li => {
-  console.log(li);
-  li.textContent = 'Hello World!';
-});
+console.log(typeof h2.className);
