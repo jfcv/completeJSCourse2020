@@ -1,6 +1,3 @@
-let icons = document.getElementsByClassName('fa');
-let iconsArray = Array.from(icons);
+let list = document.querySelectorAll('li, #hide-list');
 
-iconsArray.forEach((icon, i) => {
-  console.log(icon, i);
-});
+console.log(list);
