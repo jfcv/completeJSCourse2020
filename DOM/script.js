@@ -1,17 +1,17 @@
-let div = document.querySelector('div.wrapper');
-let header = document.querySelector('header');
+//javascript engine works executing first all the codes and then listening for Events
+
 let h2 = document.querySelector('header h2');
 
-div.addEventListener('click', function() {
-  console.log('From div');
-});
-
-header.addEventListener('click', function() {
-  console.log('From header');
-});
-
 h2.addEventListener('click', function() {
-  console.log('From h2');
+  console.log('From click event');
 });
 
-//this code probes the sequences in which the different events executes
+function a() {
+  let delay = 3000 + new Date().getTime();
+  while(new Date() < delay);
+  console.log('From function a');
+}
+
+a();
+
+console.log('Global code is executed');
