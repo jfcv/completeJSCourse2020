@@ -17,3 +17,6 @@ let form = document.getElementById('add');
 
 //insert an Element before something
 form.insertBefore(newElement, form.children[0]);
+
+//removing an Element
+newElement.parentElement.removeChild(newElement);
