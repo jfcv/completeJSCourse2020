@@ -1,10 +1,15 @@
-let btn = document.getElementById('add-btn');
-let input = document.getElementById('add-input');
+let newElement = document.createElement('button');
 
-btn.addEventListener('click', function(e) {
+console.log(newElement);
 
-  e.preventDefault(); //prevents the page to auto-reload
+let text = document.createTextNode('Click');
 
-  input.setAttribute('type', 'submit');
-  input.setAttribute('value', input.value);
-})
+console.log(text);
+
+newElement.appendChild(text);
+newElement.setAttribute('style', 'display: block; margin: 10px auto; padding; 5px 10px; background: coral; color: #fff;')
+
+console.log(newElement);
+
+let form = document.getElementById('add');
+form.appendChild(newElement);
