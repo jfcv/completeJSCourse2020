@@ -12,4 +12,8 @@ newElement.setAttribute('style', 'display: block; margin: 10px auto; padding; 5p
 console.log(newElement);
 
 let form = document.getElementById('add');
-form.appendChild(newElement);
+
+//form.appendChild(newElement);
+
+//insert an Element before something
+form.insertBefore(newElement, form.children[0]);
