@@ -1,17 +1,10 @@
-//javascript engine works executing first all the codes and then listening for Events
+let btn = document.getElementById('add-btn');
+let input = document.getElementById('add-input');
 
-let h2 = document.querySelector('header h2');
+btn.addEventListener('click', function(e) {
 
-h2.addEventListener('click', function() {
-  console.log('From click event');
-});
+  e.preventDefault(); //prevents the page to auto-reload
 
-function a() {
-  let delay = 3000 + new Date().getTime();
-  while(new Date() < delay);
-  console.log('From function a');
-}
-
-a();
-
-console.log('Global code is executed');
+  input.setAttribute('type', 'submit');
+  input.setAttribute('value', input.value);
+})
