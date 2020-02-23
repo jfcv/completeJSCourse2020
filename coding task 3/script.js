@@ -119,3 +119,28 @@ hideItems.addEventListener('click', function() {
     label.textContent = 'Hide notes'
   }
 });
+
+
+//search filter
+let searchInput = document.querySelector('#search-note input');
+let notes = ul.getElementsByTagName('li');
+
+searchInput.addEventListener('keyup', function(e) {
+
+  //search value everytime a key is pressed up on the keyboard
+  let searchChar = e.target.value.toUpperCase();
+
+  //comparing the notes with the search value (showing just the ones looked for)
+  Array.from(notes).forEach(note => {
+
+    //selecting the first parragraph on the li element
+    let parText = note.firstElementChild.textContent;
+
+    if (parText.toUpperCase().indexOf(searchChar) !== -1) {
+      note.style.display = 'block';
+    } else {
+      note.style.display = 'none';
+    }
+  });
+
+});
