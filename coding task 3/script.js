@@ -102,3 +102,20 @@ ul.addEventListener('click', function(e){
   }
 
 });
+
+
+//hide items
+let hideItems = document.getElementById('hide');
+
+hideItems.addEventListener('click', function() {
+
+  let label = document.querySelector('label');
+
+  if (hideItems.checked) {
+    ul.style.display = 'none';
+    label.textContent = 'Unhide notes'
+  } else {
+    ul.style.display = 'block';
+    label.textContent = 'Hide notes'
+  }
+});
