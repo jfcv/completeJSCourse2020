@@ -10,6 +10,9 @@ Person.prototype.getFullName = function() {
 Person.prototype.greet = 'Hello from prototype object';
 
 let person1 = new Person('John', 'Smith');
+person1.greet = 'Hello from the person1 object';
+//this is property from the person1 object
+
 let person2 = new Person('Vick', 'Doe');
 
 console.log(person1.getFullName());
