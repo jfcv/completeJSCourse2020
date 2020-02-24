@@ -1,12 +1,10 @@
-function a() {}
+function Person(firstname, lastname) {
+  this.firstname = firstname;
+  this.lastname = lastname;
+}
 
-let b = {};
+let person1 = new Person('John', 'Smith');
+let person2 = new Person('Vick', 'Doe');
 
-console.log(a.prototype);
-console.log(b);
-
-/*when using the live console on the browser [a.prototype]
-it loads the function prototype and within the function prototype
-it has an internal property called the object property
-that is the global object prototype
-*/
+console.log(person1);
+console.log(person2);
