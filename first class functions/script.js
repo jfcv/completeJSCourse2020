@@ -1,22 +1,23 @@
-let scores = [55, 35, 87, 45];
-
-function checkResult(arr, fn) {
-  let newArr = [];
-
-  for (var i = 0; i < arr.length; i++) {
-    newArr.push(fn(arr[i]));
+function finalResult(score) {
+  if (score >= 81) {
+    return function(name) {
+      console.log(name + ', you passed an exam and you are student of State University');
+    }
+  } else if (score >= 51) {
+    return function(name) {
+      console.log(name + ', you passed an exam and you are student of State College');
+    }
+  } else {
+    return function(name) {
+      console.log(name + ', you failed');
+    }
   }
-
-  return newArr;
 }
 
-function passOrFail(score) {
-  return score >= 51;
-}
+let result1 = finalResult(77);
+result1('John');
 
-function calculateDifference(score) {
-  return score - 51;
-}
+let result2 = finalResult(44);
+result2('Jane');
 
-console.log(checkResult(scores, passOrFail));
-console.log(checkResult(scores, calculateDifference));
+finalResult(96)('Mary')
