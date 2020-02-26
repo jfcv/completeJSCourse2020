@@ -17,11 +17,16 @@ let quizController = (function() {
       let optionsArr = [];
 
       for (var i = 0; i < opts.length; i++) {
+
         if (opts[i].value !== "") {
           optionsArr.push(opts[i].value);
         }
+
+        if (opts[i].previousElementSibling.checked && opts[i].value !== "") {
+          corrAns = opts[i].value;
+        }
       }
-      console.log(optionsArr);
+      console.log(corrAns);
     }
   };
 })();
@@ -55,7 +60,7 @@ let controller = (function(quizCtrl, uiCtrl) {
 
   selectedDomItems.questInsertBtn.addEventListener('click', function() {
     quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, selectedDomItems.adminOptions);
-    
+
   });
 
 })(quizController, uiController);
