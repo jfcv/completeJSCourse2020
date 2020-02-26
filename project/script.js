@@ -14,7 +14,12 @@ let quizController = (function() {
   return {
     addQuestionOnLocalStorage: function(newQuestText, opts) {
 
-      let optionsArr = [];
+      //variable declarations
+      let optionsArr, corrAns, questionId, newQuestion;
+
+      optionsArr = [];
+
+      questionId = 0;
 
       for (var i = 0; i < opts.length; i++) {
 
@@ -26,7 +31,10 @@ let quizController = (function() {
           corrAns = opts[i].value;
         }
       }
-      console.log(corrAns);
+
+      //creating the new question object
+      newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
+      console.log(newQuestion);
     }
   };
 })();
