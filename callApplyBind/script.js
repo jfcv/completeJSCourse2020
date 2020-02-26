@@ -11,3 +11,5 @@ let definePerson = function(age, job) {
 }
 
 definePerson.call(person, 28, 'Developer');
+
+definePerson.apply(person, [30, 'Designer']);
