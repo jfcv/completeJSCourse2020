@@ -59,7 +59,7 @@ div.landing-inputs-wrapper {
 
 @keyframes fade {
     0% {
-        opacity: 0; 
+        opacity: 0;
     }
     100% {
         opacity: 1;
@@ -154,7 +154,7 @@ div.admin-panel-wrapper::-webkit-scrollbar {
 }
 
 div.admin-panel-wrapper::-webkit-scrollbar-thumb {
-      background-color: #333; 
+      background-color: #333;
 }
 
 div.header{
@@ -257,7 +257,7 @@ div.forms-wrapper input[type="radio"] {
     font-size: 15px;
     float: right;
     margin: 20px;
-    background-color: #222; 
+    background-color: #222;
     border-radius: 25px;
     width: 110px;
     letter-spacing: 1.5px;
@@ -271,7 +271,7 @@ div.forms-wrapper input[type="radio"] {
 #admin-logout-btn:hover {
     color: #fff;
     border: 1px solid #fff;
-    background-color: #555; 
+    background-color: #555;
 }
 
 #questions-clear-btn {
@@ -358,7 +358,7 @@ div.inserted-questions-wrapper::-webkit-scrollbar {
 }
 
 div.inserted-questions-wrapper::-webkit-scrollbar-thumb {
-      background-color: #333; 
+      background-color: #333;
 }
 
 div.inserted-questions-wrapper p {
@@ -438,7 +438,7 @@ div.results-list-container h2 {
     outline: none;
     border: 1px solid #ccc;
     transition: all .3s;
-} 
+}
 
 #results-clear-btn:hover {
     border: 1px solid #fff;
@@ -452,7 +452,7 @@ div.results-list-container::-webkit-scrollbar {
 }
 
 div.results-list-container::-webkit-scrollbar-thumb {
-      background-color: #333;  
+      background-color: #333;
 }
 div.results-list-container p {
     font-family: 'Josefin Sans', sans-serif;
@@ -492,7 +492,7 @@ div.results-list-container p span {
     border: 1px solid #ccc;
     outline: none;
     transition: background .3s, border .3s;
-} 
+}
 
 .delete-result-btn:hover {
     background: #777;
@@ -533,7 +533,7 @@ div.quiz-wrapper::-webkit-scrollbar {
 }
 
 div.quiz-wrapper::-webkit-scrollbar-thumb {
-      background-color: #333;  
+      background-color: #333;
 }
 
 
@@ -686,7 +686,7 @@ div.quiz-options-wrapper div:hover > span {
 }
 
 div.quiz-options-wrapper div:hover > span::before {
-    border-color: #fff transparent transparent transparent; 
+    border-color: #fff transparent transparent transparent;
 }
 
 div.quiz-options-wrapper div p {
@@ -846,51 +846,3 @@ button#final-logout-btn:hover {
 /**************************************
 ******END FINAL RESULT SECTION*********
 **************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
