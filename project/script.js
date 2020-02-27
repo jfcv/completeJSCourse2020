@@ -11,6 +11,18 @@ let quizController = (function() {
     this.correctAnswer = correctAnswer;
   }
 
+  let questionLocalStorage = {
+    setQuestionCollection: function(newCollection) {
+      localStorage.setItem('questionCollection', JSON.stringify(newCollection));
+    },
+    getQuestionCollection: function() {
+      return JSON.parse(localStorage.getItem('questionCollection'));
+    },
+    removeQuestionCollection: function() {
+      localStorage.remove('questionCollection');
+    }
+  };
+
   return {
     addQuestionOnLocalStorage: function(newQuestText, opts) {
 
