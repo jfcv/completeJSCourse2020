@@ -90,12 +90,27 @@ let uiController = (function() {
     //ADMIN PANEL ELEMENTS
     questInsertBtn: document.getElementById('question-insert-btn'),
     newQuestionText: document.getElementById('new-question-text'),
-    adminOptions: document.querySelectorAll('.admin-option')
+    adminOptions: document.querySelectorAll('.admin-option'),
+    adminOptionsContainer: document.querySelector('.admin-options-container')
   };
 
   //it must be return to make public and accesible from other methods
   return {
-    getDomItems: domItems
+    getDomItems: domItems,
+
+    addInputsDynamically: function() {
+
+      let addInput = function() {
+        let inputHTML, counter;
+
+        counter = document.querySelectorAll('.admin-option').length;
+
+        inputHTML = '<div class="admin-option-wrapper"><input type="radio" class="admin-option-' + counter + '" name="answer" value="' + counter + '"><input type="text" class="admin-option admin-option-' + counter + '" value=""></div>';
+        console.log(inputHTML);
+      };
+
+      domItems.adminOptionsContainer.lastElementChild.lastElementChild.addEventListener('focus', addInput);
+    }
   };
 
 })();
@@ -106,7 +121,10 @@ let uiController = (function() {
 //controller is the interface between
 let controller = (function(quizCtrl, uiCtrl) {
 
+  //declare variables
   let selectedDomItems = uiCtrl.getDomItems;
+
+  uiCtrl.addInputsDynamically();
 
   selectedDomItems.questInsertBtn.addEventListener('click', function() {
     quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, selectedDomItems.adminOptions);
