@@ -29,7 +29,8 @@ let quizController = (function() {
       //variable declarations
       let optionsArr, corrAns, questionId, newQuestion, getStoredQuests;
 
-      //initializing the arrays
+      //initializing variables n arrays
+      corrAns = "";
       optionsArr = [];
       getStoredQuests = [];
 
@@ -56,21 +57,26 @@ let quizController = (function() {
         questionId = 0;
       }
 
-      //creating the new question object
-      newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
+      //bulletproofing the form non sense values
+      if(newQuestText.value !== "" && optionsArr.length > 1  && corrAns !== "") {
+        //creating the new question object
+        newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
 
-      getStoredQuests = questionLocalStorage.getQuestionCollection();
-      getStoredQuests.push(newQuestion);
-      questionLocalStorage.setQuestionCollection(getStoredQuests);
+        getStoredQuests = questionLocalStorage.getQuestionCollection();
+        getStoredQuests.push(newQuestion);
+        questionLocalStorage.setQuestionCollection(getStoredQuests);
 
-      newQuestText.value = "";
+        newQuestText.value = "";
 
-      for (var k = 0; k < opts.length; k++) {
-        opts[k].value = "";
-        opts[k].previousElementSibling.checked = false;
+        for (var k = 0; k < opts.length; k++) {
+          opts[k].value = "";
+          opts[k].previousElementSibling.checked = false;
+        }
+
+        console.log(questionLocalStorage.getQuestionCollection());
+      } else {
+        alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
       }
-
-      console.log(questionLocalStorage.getQuestionCollection());
     }
   };
 })();
