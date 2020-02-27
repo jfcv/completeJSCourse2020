@@ -63,6 +63,13 @@ let quizController = (function() {
       getStoredQuests.push(newQuestion);
       questionLocalStorage.setQuestionCollection(getStoredQuests);
 
+      newQuestText.value = "";
+
+      for (var k = 0; k < opts.length; k++) {
+        opts[k].value = "";
+        opts[k].previousElementSibling.checked = false;
+      }
+
       console.log(questionLocalStorage.getQuestionCollection());
     }
   };
