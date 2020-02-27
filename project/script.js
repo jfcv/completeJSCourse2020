@@ -27,9 +27,15 @@ let quizController = (function() {
     addQuestionOnLocalStorage: function(newQuestText, opts) {
 
       //variable declarations
-      let optionsArr, corrAns, questionId, newQuestion;
+      let optionsArr, corrAns, questionId, newQuestion, getStoredQuests;
 
+      //initializing the arrays
       optionsArr = [];
+      getStoredQuests = [];
+
+      if(questionLocalStorage.getQuestionCollection() === null) {
+        questionLocalStorage.setQuestionCollection([]);
+      }
 
       //obtainning the 'options array' and the 'correct answer'
       for (var i = 0; i < opts.length; i++) {
@@ -52,7 +58,12 @@ let quizController = (function() {
 
       //creating the new question object
       newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
-      console.log(newQuestion);
+
+      getStoredQuests = questionLocalStorage.getQuestionCollection();
+      getStoredQuests.push(newQuestion);
+      questionLocalStorage.setQuestionCollection(getStoredQuests);
+
+      console.log(questionLocalStorage.getQuestionCollection());
     }
   };
 })();
