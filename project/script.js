@@ -31,8 +31,7 @@ let quizController = (function() {
 
       optionsArr = [];
 
-      questionId = 0;
-
+      //obtainning the 'options array' and the 'correct answer'
       for (var i = 0; i < opts.length; i++) {
 
         if (opts[i].value !== "") {
@@ -42,6 +41,13 @@ let quizController = (function() {
         if (opts[i].previousElementSibling.checked && opts[i].value !== "") {
           corrAns = opts[i].value;
         }
+      }
+
+      // defining the id's for each question
+      if (questionLocalStorage.getQuestionCollection().length > 0) {
+        questionId = questionLocalStorage.getQuestionCollection()[questionLocalStorage.getQuestionCollection().length - 1].id + 1;
+      } else {
+        questionId = 0;
       }
 
       //creating the new question object
