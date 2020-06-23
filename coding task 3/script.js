@@ -53,6 +53,9 @@ btn.addEventListener('click', function(e){
 
       //appends the new item to the list
       list.appendChild(newItem);
+
+      //resetting the input value
+      input.value = "";
     }
 });
 
