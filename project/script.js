@@ -23,7 +23,15 @@ let quizController = (function() {
     }
   };
 
+  //if there's nothing in the local storage.. then it will create an empty array
+  if(questionLocalStorage.getQuestionCollection() === null) {
+    questionLocalStorage.setQuestionCollection([]);
+  }
+
   return {
+
+    getQuestionLocalStorage: questionLocalStorage,
+
     addQuestionOnLocalStorage: function(newQuestText, opts) {
 
       //variable declarations
@@ -74,8 +82,13 @@ let quizController = (function() {
         }
 
         console.log(questionLocalStorage.getQuestionCollection());
+
+        return true;
+
       } else {
         alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
+        return false;
+
       }
     }
   };
@@ -91,7 +104,8 @@ let uiController = (function() {
     questInsertBtn: document.getElementById('question-insert-btn'),
     newQuestionText: document.getElementById('new-question-text'),
     adminOptions: document.querySelectorAll('.admin-option'),
-    adminOptionsContainer: document.querySelector('.admin-options-container')
+    adminOptionsContainer: document.querySelector('.admin-options-container'),
+    insertedQuestsWrapper: document.querySelector('.inserted-questions-wrapper')
   };
 
   //it must be return to make public and accesible from other methods
@@ -101,16 +115,43 @@ let uiController = (function() {
     addInputsDynamically: function() {
 
       let addInput = function() {
+
         let inputHTML, counter;
 
+        //options counter
         counter = document.querySelectorAll('.admin-option').length;
 
         inputHTML = '<div class="admin-option-wrapper"><input type="radio" class="admin-option-' + counter + '" name="answer" value="' + counter + '"><input type="text" class="admin-option admin-option-' + counter + '" value=""></div>';
-        console.log(inputHTML);
+
+        domItems.adminOptionsContainer.insertAdjacentHTML('beforeend', inputHTML);
+
+        //removing the event from the previous element
+        domItems.adminOptionsContainer.lastElementChild.previousElementSibling.lastElementChild.removeEventListener('focus', addInput);
+
+        //attaching the event to the new 'last' element
+        domItems.adminOptionsContainer.lastElementChild.lastElementChild.addEventListener('focus', addInput);
       };
 
       domItems.adminOptionsContainer.lastElementChild.lastElementChild.addEventListener('focus', addInput);
+    },
+
+    createQuestionList: function(getQuestions) {
+
+      let questionHTML;
+
+      //clearing the question lists
+      domItems.insertedQuestsWrapper.innerHTML = "";
+
+      //populating the wrapper with the updated questions
+      for(var i = 0; i < getQuestions.getQuestionCollection().length; i++){
+        //creating the question in the ith iteration
+        questionHTML = '<p><span>' + (parseInt(getQuestions.getQuestionCollection()[i].id) + 1) + '. ' + getQuestions.getQuestionCollection()[i].questionText + '</span><button id="question-' + getQuestions.getQuestionCollection()[i].id + '">Edit</button></p>';
+        //updating the list
+        domItems.insertedQuestsWrapper.insertAdjacentHTML('beforeend', questionHTML);
+      }
+
     }
+
   };
 
 })();
@@ -121,13 +162,26 @@ let uiController = (function() {
 //controller is the interface between
 let controller = (function(quizCtrl, uiCtrl) {
 
-  //declare variables
+  //getting the variables from the UI
   let selectedDomItems = uiCtrl.getDomItems;
 
+  //invoking addInputsDynamically method from UI controller
   uiCtrl.addInputsDynamically();
 
+  //invoking questionList method from UI controller
+  uiCtrl.createQuestionList(quizCtrl.getQuestionLocalStorage);
+
+  //method called when the insert button is pressed on the UI
   selectedDomItems.questInsertBtn.addEventListener('click', function() {
-    quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, selectedDomItems.adminOptions);
+
+    //selecting admin options again
+    let adminOptions = document.querySelectorAll('.admin-option');
+
+    let checkedAns = quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, adminOptions);
+
+    if (checkedAns) {
+      uiCtrl.createQuestionList(quizCtrl.getQuestionLocalStorage);
+    }
 
   });
 
