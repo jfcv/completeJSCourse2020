@@ -107,7 +107,8 @@ let uiController = (function() {
     adminOptionsContainer: document.querySelector('.admin-options-container'),
     insertedQuestsWrapper: document.querySelector('.inserted-questions-wrapper'),
     questionUpdateBtn: document.getElementById('question-update-btn'),
-    questionDeleteBtn: document.getElementById('question-delete-btn')
+    questionDeleteBtn: document.getElementById('question-delete-btn'),
+    questsClearBtn: document.getElementById('questions-clear-btn')
   };
 
   //it must be return to make public and accesible from other methods
@@ -200,8 +201,55 @@ let uiController = (function() {
       domItems.questionUpdateBtn.style.visibility = 'visible';
       domItems.questionDeleteBtn.style.visibility = 'visible';
 
-      //hiding insert button
+      //hiding insert & clear buttons
       domItems.questInsertBtn.style.visibility = 'hidden';
+      domItems.questsClearBtn.style.pointerEvents = 'none';
+
+      //updating content function
+      let updateQuestion = function() {
+        let newOptions, optionEls;
+
+        //initialize vector for avoiding errors
+        newOptions = [];
+
+        //selecting possible answers to the question
+        optionEls = document.querySelectorAll('.admin-option');
+
+        //updating the question text on the UI
+        foundItem.questionText = domItems.newQuestionText.value;
+
+        //cleaning previous correct answer
+        foundItem.correctAnswer = '';
+
+        //saving the options (possible answers) recovered from the UI on the vector
+        for (var i = 0; i < optionEls.length; i++) {
+          if (optionEls[i].value !== "") {
+            newOptions.push(optionEls[i].value);
+            if (optionEls[i].previousElementSibling.checked) {
+                foundItem.correctAnswer = optionEls[i].value;
+            }
+          }
+        }
+
+        //setting the updated options to the question object -> foundItem
+        foundItem.options = newOptions;
+
+        if (foundItem.questionText !== "" && foundItem.options.length > 1 && foundItem.correctAnswer !== "") {
+
+          //replacing the question on the web local storage
+          getStorageQuestList.splice(placeInArr, 1, foundItem);
+          //setting the new data on the local storage
+          storageQuestList.setQuestionCollection(getStorageQuestList);
+
+        } else {
+          alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
+        }
+
+      }
+
+      //onclick event for updating the question
+      domItems.questionUpdateBtn.onclick = updateQuestion;
+
     }
 
   };
