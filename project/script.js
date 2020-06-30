@@ -156,7 +156,7 @@ let uiController = (function() {
     },
 
     //edit question list
-    editQuestsList: function(event, storageQuestList, addInputsDynFn) {
+    editQuestsList: function(event, storageQuestList, addInputsDynFn, updateQuestsListFn) {
       let getId, getStorageQuestList, foundItem, placeInArr, optionsHTML;
 
       if ('question-'.indexOf(event.target.id)) {
@@ -197,7 +197,7 @@ let uiController = (function() {
       //adding inputs dynamically method
       addInputsDynFn();
 
-      //showind update & delete buttons
+      //showing update & delete buttons
       domItems.questionUpdateBtn.style.visibility = 'visible';
       domItems.questionDeleteBtn.style.visibility = 'visible';
 
@@ -240,6 +240,26 @@ let uiController = (function() {
           getStorageQuestList.splice(placeInArr, 1, foundItem);
           //setting the new data on the local storage
           storageQuestList.setQuestionCollection(getStorageQuestList);
+
+          //clearing up the interface when the updating process is done
+          domItems.newQuestionText.value = '';
+
+          //it's possible to use the i variable for this loop method due to the context
+          for (var i = 0; i < optionEls.length; i++) {
+            optionEls[i].value = '';
+            optionEls[i].previousElementSibling.value = '';
+          }
+
+          //hiding update & delete buttons
+          domItems.questionUpdateBtn.style.visibility = 'hidden';
+          domItems.questionDeleteBtn.style.visibility = 'hidden';
+
+          //showing insert button
+          domItems.questInsertBtn.style.visibility = 'visible';
+          domItems.questsClearBtn.style.pointerEvents = '';
+
+          //update questions list method
+          updateQuestsListFn(storageQuestList);
 
         } else {
           alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
@@ -288,7 +308,7 @@ let controller = (function(quizCtrl, uiCtrl) {
   //method called when editing button is pressed
   selectedDomItems.insertedQuestsWrapper.addEventListener('click', function(e) {
 
-    uiCtrl.editQuestsList(e, quizCtrl.getQuestionLocalStorage, uiCtrl.addInputsDynamically);
+    uiCtrl.editQuestsList(e, quizCtrl.getQuestionLocalStorage, uiCtrl.addInputsDynamically, uiCtrl.createQuestionList);
 
   });
 
