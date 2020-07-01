@@ -29,7 +29,14 @@ let quizController = (function() {
     questionLocalStorage.setQuestionCollection([]);
   }
 
+  //quiz progress index, it increases along the quiz
+  let quizProgress = {
+    questionIndex: 0
+  };
+
   return {
+
+    getQuizProgress: quizProgress,
 
     getQuestionLocalStorage: questionLocalStorage,
 
@@ -109,7 +116,10 @@ let uiController = (function() {
     insertedQuestsWrapper: document.querySelector('.inserted-questions-wrapper'),
     questionUpdateBtn: document.getElementById('question-update-btn'),
     questionDeleteBtn: document.getElementById('question-delete-btn'),
-    questsClearBtn: document.getElementById('questions-clear-btn')
+    questsClearBtn: document.getElementById('questions-clear-btn'),
+    //QUIZ SECTION ELEMENTS
+    askedQuestText: document.getElementById('asked-question-text'),
+    quizOptionsWrapper: document.querySelector('.quiz-options-wrapper')
   };
 
   //it must be return to make public and accesible from other methods
@@ -308,6 +318,32 @@ let uiController = (function() {
         }
       }
 
+    },
+
+    displayQuestions: function(storageQuestList, progress) {
+      let newOptionHTML, characterArr;
+
+      //options letter array for the different options on each question
+      characterArr = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+      if (storageQuestList.getQuestionCollection().length > 0) {
+
+        //showing the question on the ith position on the quiz section
+        domItems.askedQuestText.textContent = storageQuestList.getQuestionCollection()[progress.questionIndex].questionText;
+        //clearing up the quiz Options Wrapper
+        domItems.quizOptionsWrapper.innerHTML = '';
+
+        for (var i = 0; i < storageQuestList.getQuestionCollection()[progress.questionIndex].options.length; i++) {
+
+          //creating each option on each iteration
+          newOptionHTML = '<div class="choice-' + i + '"><span class="choice-' + i + '">' + characterArr[i] + '</span><p  class="choice-' + i + '">' + storageQuestList.getQuestionCollection()[progress.questionIndex].options[i] + '</p></div>';
+          //populating the quiz options wrapper with the actual options
+          domItems.quizOptionsWrapper.insertAdjacentHTML('beforeend', newOptionHTML);
+
+        }
+
+      }
+
     }
 
   };
@@ -356,5 +392,8 @@ let controller = (function(quizCtrl, uiCtrl) {
     uiCtrl.clearQuestList(quizCtrl.getQuestionLocalStorage);
 
   });
+
+  //display questions on the quiz section
+  uiCtrl.displayQuestions(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
 
 })(quizController, uiController);
