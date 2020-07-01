@@ -92,11 +92,17 @@ let quizController = (function() {
         console.log(questionLocalStorage.getQuestionCollection());
 
         return true;
-
       } else {
         alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
         return false;
+      }
+    },
 
+    checkAnswer: function(ans) {
+      if (questionLocalStorage.getQuestionCollection()[quizProgress.questionIndex].correctAnswer === ans.textContent) {
+        return true;
+      } else {
+        return false;
       }
     }
   };
@@ -398,5 +404,18 @@ let controller = (function(quizCtrl, uiCtrl) {
 
   //display questions on the quiz section
   uiCtrl.displayProgress(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
+
+  //selecting the right answer
+  selectedDomItems.quizOptionsWrapper.addEventListener('click', function(e) {
+    let updatedOptionsDiv = selectedDomItems.quizOptionsWrapper.querySelectorAll('div');
+
+    for (var i = 0; i < updatedOptionsDiv.length; i++) {
+      if (e.target.className === 'choice-' + i) {
+        let answer = document.querySelector('.quiz-options-wrapper div p.' + e.target.className);
+        quizCtrl.checkAnswer(answer);
+      }
+    }
+
+  });
 
 })(quizController, uiController);
