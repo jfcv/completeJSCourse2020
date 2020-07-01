@@ -119,7 +119,9 @@ let uiController = (function() {
     questsClearBtn: document.getElementById('questions-clear-btn'),
     //QUIZ SECTION ELEMENTS
     askedQuestText: document.getElementById('asked-question-text'),
-    quizOptionsWrapper: document.querySelector('.quiz-options-wrapper')
+    quizOptionsWrapper: document.querySelector('.quiz-options-wrapper'),
+    progressBar: document.querySelector('progress'),
+    progressParagrah: document.getElementById('progress')
   };
 
   //it must be return to make public and accesible from other methods
@@ -344,6 +346,12 @@ let uiController = (function() {
 
       }
 
+    },
+
+    displayProgress: function(storageQuestList, progress) {
+      domItems.progressBar.max = storageQuestList.getQuestionCollection().length;
+      domItems.progressBar.value = progress.questionIndex + 1;
+      domItems.progressParagrah.textContent = (domItems.progressBar.value) + ' / ' + domItems.progressBar.max;
     }
 
   };
@@ -367,33 +375,28 @@ let controller = (function(quizCtrl, uiCtrl) {
 
   //method called when the insert button is pressed on the UI
   selectedDomItems.questInsertBtn.addEventListener('click', function() {
-
     //selecting admin options again
     let adminOptions = document.querySelectorAll('.admin-option');
-
     let checkedAns = quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, adminOptions);
-
     if (checkedAns) {
       uiCtrl.createQuestionList(quizCtrl.getQuestionLocalStorage);
     }
-
   });
 
   //method called when editing button is pressed
   selectedDomItems.insertedQuestsWrapper.addEventListener('click', function(e) {
-
     uiCtrl.editQuestsList(e, quizCtrl.getQuestionLocalStorage, uiCtrl.addInputsDynamically, uiCtrl.createQuestionList);
-
   });
 
   //method called when the 'clear list' button is pressed
   selectedDomItems.questsClearBtn.addEventListener('click', function(){
-
     uiCtrl.clearQuestList(quizCtrl.getQuestionLocalStorage);
-
   });
 
   //display questions on the quiz section
   uiCtrl.displayQuestions(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
+
+  //display questions on the quiz section
+  uiCtrl.displayProgress(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
 
 })(quizController, uiController);
