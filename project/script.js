@@ -19,7 +19,8 @@ let quizController = (function() {
       return JSON.parse(localStorage.getItem('questionCollection'));
     },
     removeQuestionCollection: function() {
-      localStorage.remove('questionCollection');
+      localStorage.clear();
+      //localStorage.remove('questionCollection'); //it changed : it didn't recognised the method above as part of the stack
     }
   };
 
@@ -290,6 +291,23 @@ let uiController = (function() {
       //onclick event for deleting the question
       domItems.questionDeleteBtn.onclick = deleteQuestion;
 
+    },
+
+    clearQuestList: function(storageQuestList) {
+
+      if (storageQuestList.getQuestionCollection() !== null) {
+        if (storageQuestList.getQuestionCollection().length > 0) {
+          let consent = confirm('warning the entire question list');
+          if (consent) {
+              //delete collection
+              storageQuestList.removeQuestionCollection();
+
+              //clearing the question lists
+              domItems.insertedQuestsWrapper.innerHTML = "";
+          }
+        }
+      }
+
     }
 
   };
@@ -329,6 +347,13 @@ let controller = (function(quizCtrl, uiCtrl) {
   selectedDomItems.insertedQuestsWrapper.addEventListener('click', function(e) {
 
     uiCtrl.editQuestsList(e, quizCtrl.getQuestionLocalStorage, uiCtrl.addInputsDynamically, uiCtrl.createQuestionList);
+
+  });
+
+  //method called when the 'clear list' button is pressed
+  selectedDomItems.questsClearBtn.addEventListener('click', function(){
+
+    uiCtrl.clearQuestList(quizCtrl.getQuestionLocalStorage);
 
   });
 
