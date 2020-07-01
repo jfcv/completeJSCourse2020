@@ -205,15 +205,37 @@ let uiController = (function() {
       domItems.questInsertBtn.style.visibility = 'hidden';
       domItems.questsClearBtn.style.pointerEvents = 'none';
 
+      //rendering backDefaultView
+      let backDefaultView = function(optionEls) {
+        //clearing up the interface when the updating process is done
+        domItems.newQuestionText.value = '';
+
+        //it's possible to use the i variable for this loop method due to the context
+        for (var i = 0; i < optionEls.length; i++) {
+          optionEls[i].value = '';
+          optionEls[i].previousElementSibling.checked = false;
+        }
+
+        //hiding update & delete buttons
+        domItems.questionUpdateBtn.style.visibility = 'hidden';
+        domItems.questionDeleteBtn.style.visibility = 'hidden';
+
+        //showing insert button
+        domItems.questInsertBtn.style.visibility = 'visible';
+        domItems.questsClearBtn.style.pointerEvents = '';
+
+        //update questions list method
+        updateQuestsListFn(storageQuestList);
+      }
+
+      //selecting possible answers to the question
+      let optionEls = document.querySelectorAll('.admin-option'); //it must be declare 'globally' because of the scope
+
       //updating content function
       let updateQuestion = function() {
-        let newOptions, optionEls;
 
         //initialize vector for avoiding errors
-        newOptions = [];
-
-        //selecting possible answers to the question
-        optionEls = document.querySelectorAll('.admin-option');
+        let newOptions = [];
 
         //updating the question text on the UI
         foundItem.questionText = domItems.newQuestionText.value;
@@ -241,25 +263,8 @@ let uiController = (function() {
           //setting the new data on the local storage
           storageQuestList.setQuestionCollection(getStorageQuestList);
 
-          //clearing up the interface when the updating process is done
-          domItems.newQuestionText.value = '';
-
-          //it's possible to use the i variable for this loop method due to the context
-          for (var i = 0; i < optionEls.length; i++) {
-            optionEls[i].value = '';
-            optionEls[i].previousElementSibling.value = '';
-          }
-
-          //hiding update & delete buttons
-          domItems.questionUpdateBtn.style.visibility = 'hidden';
-          domItems.questionDeleteBtn.style.visibility = 'hidden';
-
-          //showing insert button
-          domItems.questInsertBtn.style.visibility = 'visible';
-          domItems.questsClearBtn.style.pointerEvents = '';
-
-          //update questions list method
-          updateQuestsListFn(storageQuestList);
+          //rendering the default view
+          backDefaultView(optionEls);
 
         } else {
           alert('Please check if there is a question, possible answers (it means more than one) and the correct answer. Otherwise it will be an imcomplete Quiz.');
@@ -269,6 +274,21 @@ let uiController = (function() {
 
       //onclick event for updating the question
       domItems.questionUpdateBtn.onclick = updateQuestion;
+
+      //deleting content function
+      let deleteQuestion = function() {
+        //deleting the question using its identifier
+        getStorageQuestList.splice(placeInArr, 1);
+
+        //updating the question collection on the local storage
+        storageQuestList.setQuestionCollection(getStorageQuestList);
+
+        //rendering the default view
+        backDefaultView(optionEls);
+      }
+
+      //onclick event for deleting the question
+      domItems.questionDeleteBtn.onclick = deleteQuestion;
 
     }
 
