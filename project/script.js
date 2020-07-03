@@ -127,7 +127,11 @@ let uiController = (function() {
     askedQuestText: document.getElementById('asked-question-text'),
     quizOptionsWrapper: document.querySelector('.quiz-options-wrapper'),
     progressBar: document.querySelector('progress'),
-    progressParagrah: document.getElementById('progress')
+    progressParagrah: document.getElementById('progress'),
+    instAnsContainer: document.querySelector('.instant-answer-container'),
+    instAnsText: document.getElementById('instant-answer-text'),
+    instAnsDiv: document.getElementById('instant-answer-wrapper'),
+    instAnsImg: document.getElementById('emotion')
   };
 
   //it must be return to make public and accesible from other methods
@@ -358,6 +362,41 @@ let uiController = (function() {
       domItems.progressBar.max = storageQuestList.getQuestionCollection().length;
       domItems.progressBar.value = progress.questionIndex + 1;
       domItems.progressParagrah.textContent = (domItems.progressBar.value) + ' / ' + domItems.progressBar.max;
+    },
+
+    answerDesign: function(ansResult, selectedAnswer) {
+      let ansUIOptions, index;
+
+      index = 0;
+
+      //if the result is true, the index changes
+      if (ansResult) {
+        index = 1;
+      }
+
+      //possible feedback depending on the answers
+      ansUIOptions = {
+        instAnswerText: ['This is a wrong answer', 'This is a correct answer'],
+        instAnswerClass: ['red', 'green'],
+        instAnswerFace: ['images/sad.png','images/happy.png'],
+        instAnsSpan: ['rgba(200, 0, 0, .7)', 'rgba(0, 250, 0, .2)']
+      }
+
+      //changing the UI style
+      domItems.quizOptionsWrapper.style.cssText = 'opacity: 0.6; pointer-events: none;';
+      domItems.instAnsContainer.style.opacity = '1';
+
+      //selecting answer options depending upon the result
+      domItems.instAnsText.textContent = ansUIOptions.instAnswerText[index];
+
+      //showing the color depending on the user's answer
+      domItems.instAnsDiv.className = ansUIOptions.instAnswerClass[index];
+
+      //showing the face image depending on the user's answer
+      domItems.instAnsImg.src = ansUIOptions.instAnswerFace[index];
+
+      //choices background color depending upon the user's answer
+      selectedAnswer.previousElementSibling.style.backgroundColor = ansUIOptions.instAnsSpan[index];
     }
 
   };
@@ -412,7 +451,8 @@ let controller = (function(quizCtrl, uiCtrl) {
     for (var i = 0; i < updatedOptionsDiv.length; i++) {
       if (e.target.className === 'choice-' + i) {
         let answer = document.querySelector('.quiz-options-wrapper div p.' + e.target.className);
-        quizCtrl.checkAnswer(answer);
+        let answerResult = quizCtrl.checkAnswer(answer);
+        uiCtrl.answerDesign(answerResult, answer);
       }
     }
 
