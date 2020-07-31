@@ -518,6 +518,14 @@ let uiController = (function() {
         resultHTML = '<p class="person person- ' + i + ' "><span class="person- ' + i + ' "> ' + userData.getPersonData()[i].firstname + ' ' + userData.getPersonData()[i].lastname + ' - ' + userData.getPersonData()[i].score + ' Points</span><button id="delete-result-btn_' + userData.getPersonData()[i].id + '" class="delete-result-btn">Delete</button></p>';
         domItems.resultsListWrapper.insertAdjacentHTML('afterbegin', resultHTML);
       }
+    },
+
+    deleteResult: function(event, userData) {
+      let getId;
+      if ('delete-result-btn_'.indexOf(event.target.id)) {
+        getId = parseInt(event.target.id.split('_')[1]);
+        console.log(getId);
+      }
     }
 
   };
@@ -612,5 +620,9 @@ let controller = (function(quizCtrl, uiCtrl) {
   });
 
   uiCtrl.addResultOnPanel(quizCtrl.getPersonLocalStorage);
+
+  selectedDomItems.resultsListWrapper.addEventListener('click', function(e){
+    uiCtrl.deleteResult(e, quizCtrl.getPersonLocalStorage);
+  });
 
 })(quizController, uiController);
