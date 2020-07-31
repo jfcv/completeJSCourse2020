@@ -43,9 +43,11 @@ let quizController = (function() {
   }
 
   let currPersonData = {
-    fullname: ['Nick','Doe'],
+    fullname: [],
     score: 0
   }
+
+  let adminFullName = ['John', 'Smith'];
 
   let personLocalStorage = {
     setPersonData: function(newPersonData) {
@@ -157,7 +159,11 @@ let quizController = (function() {
       personLocalStorage.setPersonData(personData);
 
       console.log(newPerson);
-    }
+    },
+
+    getCurrPersonData: currPersonData,
+
+    getAdminFullName: adminFullName
 
   };
 })();
@@ -169,6 +175,7 @@ let uiController = (function() {
 
   let domItems = {
     //ADMIN PANEL ELEMENTS
+    adminSection: document.querySelector('.admin-panel-container'),
     questInsertBtn: document.getElementById('question-insert-btn'),
     newQuestionText: document.getElementById('new-question-text'),
     adminOptions: document.querySelectorAll('.admin-option'),
@@ -178,6 +185,7 @@ let uiController = (function() {
     questionDeleteBtn: document.getElementById('question-delete-btn'),
     questsClearBtn: document.getElementById('questions-clear-btn'),
     //QUIZ SECTION ELEMENTS
+    quizSection: document.querySelector('.quiz-container'),
     askedQuestText: document.getElementById('asked-question-text'),
     quizOptionsWrapper: document.querySelector('.quiz-options-wrapper'),
     progressBar: document.querySelector('progress'),
@@ -186,7 +194,12 @@ let uiController = (function() {
     instAnsText: document.getElementById('instant-answer-text'),
     instAnsDiv: document.getElementById('instant-answer-wrapper'),
     instAnsImg: document.getElementById('emotion'),
-    nextQstBtn: document.getElementById('next-question-btn')
+    nextQstBtn: document.getElementById('next-question-btn'),
+    // LANDING PAGE ELEMENTS
+    landingPageSection: document.querySelector('.landing-page-container'),
+    startQuizBtn: document.getElementById('start-quiz-btn'),
+    firstNameInput: document.getElementById('firstname'),
+    lastNameInput: document.getElementById('lastname')
   };
 
   //it must be return to make public and accesible from other methods
@@ -457,6 +470,28 @@ let uiController = (function() {
     resetDesign: function() {
       domItems.quizOptionsWrapper.style.cssText = '';
       domItems.instAnsContainer.style.opacity = '0';
+    },
+
+    getFullName: function(currPersonData, storageQuestList, admin) {
+
+      if (domItems.firstNameInput.value !== '' && domItems.lastNameInput.value !== '') {
+
+        if (!(domItems.firstNameInput.value === admin[0] && domItems.lastNameInput.value === admin[1])) {
+          currPersonData.fullname.push(domItems.firstNameInput.value);
+          currPersonData.fullname.push(domItems.lastNameInput.value);
+          domItems.landingPageSection.style.display = 'none';
+          domItems.quizSection.style.display = 'block';
+          console.log(currPersonData);
+          console.log('Quiz has started');
+        } else {
+          domItems.landingPageSection.style.display = 'none';
+          domItems.adminSection.style.display = 'block';
+        }
+
+      } else {
+        alert('Please, enter your first name & your last name');
+      }
+
     }
 
   };
@@ -535,6 +570,18 @@ let controller = (function(quizCtrl, uiCtrl) {
       }
     }
 
+  });
+
+  selectedDomItems.startQuizBtn.addEventListener('click', function(){
+    uiCtrl.getFullName(quizCtrl.getCurrPersonData, quizCtrl.getQuestionCollection, quizCtrl.getAdminFullName);
+  });
+
+  selectedDomItems.lastNameInput.addEventListener('focus', function() {
+    selectedDomItems.lastNameInput.addEventListener('keydown', function(e) {
+      if (e.keycode === 36) {
+        uiCtrl.getFullName(quizCtrl.getCurrPersonData, quizCtrl.getQuestionCollection, quizCtrl.getAdminFullName);
+      }
+    });
   });
 
 })(quizController, uiController);
