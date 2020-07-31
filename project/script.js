@@ -34,6 +34,35 @@ let quizController = (function() {
     questionIndex: 0
   };
 
+  //**** PERSON CONSTRUCTOR ****//
+  function Person(id, firstname, lastname, score) {
+    this.id = id;
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.score = score;
+  }
+
+  let currPersonData = {
+    fullname: ['Nick','Doe'],
+    score: 0
+  }
+
+  let personLocalStorage = {
+    setPersonData: function(newPersonData) {
+      localStorage.setItem('personData', JSON.stringify(newPersonData));
+    },
+    getPersonData: function() {
+      return JSON.parse(localStorage.getItem('personData'));
+    },
+    removePersonData: function() {
+      localStorage.removeItem('personData')
+    }
+  };
+
+  if (personLocalStorage.getPersonData() == null) {
+    personLocalStorage.setPersonData([]);
+  }
+
   return {
 
     getQuizProgress: quizProgress,
@@ -104,7 +133,32 @@ let quizController = (function() {
       } else {
         return false;
       }
+    },
+
+    isFinished: function() {
+      return quizProgress.questionIndex + 1 === questionLocalStorage.getQuestionCollection().length;
+    },
+
+    addPerson: function() {
+      let newPerson, personId, personData;
+
+      if (personLocalStorage.getPersonData().legnth > 0) {
+        personId = personLocalStorage.getPersonData()[personLocalStorage.getPersonData().length - 1].id + 1;
+      } else {
+        personId = 0;
+      }
+
+      newPerson = new Person(personId, currPersonData.fullname[0], currPersonData.fullname[1], currPersonData.score);
+
+      personData = personLocalStorage.getPersonData();
+
+      personData.push(newPerson);
+
+      personLocalStorage.setPersonData(personData);
+
+      console.log(newPerson);
     }
+
   };
 })();
 
@@ -131,7 +185,8 @@ let uiController = (function() {
     instAnsContainer: document.querySelector('.instant-answer-container'),
     instAnsText: document.getElementById('instant-answer-text'),
     instAnsDiv: document.getElementById('instant-answer-wrapper'),
-    instAnsImg: document.getElementById('emotion')
+    instAnsImg: document.getElementById('emotion'),
+    nextQstBtn: document.getElementById('next-question-btn')
   };
 
   //it must be return to make public and accesible from other methods
@@ -397,6 +452,11 @@ let uiController = (function() {
 
       //choices background color depending upon the user's answer
       selectedAnswer.previousElementSibling.style.backgroundColor = ansUIOptions.instAnsSpan[index];
+    },
+
+    resetDesign: function() {
+      domItems.quizOptionsWrapper.style.cssText = '';
+      domItems.instAnsContainer.style.opacity = '0';
     }
 
   };
@@ -453,6 +513,25 @@ let controller = (function(quizCtrl, uiCtrl) {
         let answer = document.querySelector('.quiz-options-wrapper div p.' + e.target.className);
         let answerResult = quizCtrl.checkAnswer(answer);
         uiCtrl.answerDesign(answerResult, answer);
+        if (quizCtrl.isFinished()) {
+          selectedDomItems.nextQstBtn.textContent = 'Finish';
+        }
+
+        let nextQuestion = function(questData, progress){
+          if (quizCtrl.isFinished()) {
+            quizCtrl.addPerson();
+            console.log('finished');
+          } else {
+            uiCtrl.resetDesign();
+            quizCtrl.getQuizProgress.questionIndex++;
+            uiCtrl.displayQuestions(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
+            uiCtrl.displayProgress(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
+          }
+        }
+
+        selectedDomItems.nextQstBtn.onclick = function(){
+          nextQuestion(quizCtrl.getQuestionLocalStorage, quizCtrl.getQuizProgress);
+        }
       }
     }
 
